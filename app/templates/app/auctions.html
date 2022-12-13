@@ -1,0 +1,57 @@
+{% extends "app/layout.html" %}
+{% load staticfiles %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="jumbotron">
+    <h1>Auctions</h1>
+    <div style="text-align:right; font-size:medium; display:inline;">
+        <form action="" method="post" novalidate>
+        {% csrf_token %}
+        <p style="font-size:medium;"><strong>{{ bid_form.as_p }}</strong></p>
+        <input type="submit" value="Bid" class="btn btn-lg btn-primary">
+        </form>
+    </div>
+</div>
+<div>
+    <table class="table table-bordered text-center">
+        <thead>
+            <tr style="font-size:medium;">
+                <th scope="col" class="text-center" width="200">PRODUCT</th>
+                <th scope="col" class="text-center" width="400">PRODUCT DETAILS</th>
+                <th scope="col" class="text-center" width="400">AUCTION DETAILS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in auction_list %}
+            <tr>
+            <td><img src="{{ a.product_id.image.url }}" class="card-img-top" alt="..." height="180" width="180"></td>
+            <td style="vertical-align:middle">
+                <h4 class="card-title"><strong>{{ a.product_id.title }}</strong></h4>
+                <h5 class="card-subtitle mb-2"><strong>Date Posted:</strong> {{ a.product_id.date_posted }}</h5>
+                <h5 class="card-subtitle mb-2"><strong>Quantity:</strong> {{ a.product_id.quantity }}</h5>
+                <p style="font-size:medium;"><em>{{ a.product_id.description }}</em></p>
+            </td>
+            <td style="vertical-align:middle">
+                <p style="font-size:medium;"><strong>Auction ID:</strong> {{ a.a_id }}</p>
+                <p style="font-size:medium;"><strong>Starting Price:</strong> INR {{ a.start_price }}</p>
+                <p style="font-size:medium;"><strong>Bidding Start:</strong> {{ a.time_starting }}</p>
+                <p style="font-size:medium;"><strong>Bidding End:</strong> {{ a.time_ending }}</p>
+            </td>
+            </tr>
+             {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+<div class="jumbotron">
+    <h1>Auctions</h1>
+    <p class="lead">Please log in first to continue!</p>
+    <p><a href="{% url 'login' %}" class="btn btn-primary btn-large">Log in &raquo;</a></p>
+</div>
+{% endif %}
+{% endblock %}
+
+
+
+
